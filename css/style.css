@@ -1,0 +1,202 @@
+/* DOOM — estilos de interfaz (originales) */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  font-family: "Courier New", Courier, monospace;
+  color: #ddd;
+}
+
+/* Lienzo del juego: escalado pixelado, centrado con barras negras */
+#screen {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  background: #000;
+}
+
+/* ---------- Overlays / menús ---------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 24px;
+  padding-top: max(24px, env(safe-area-inset-top));
+  padding-bottom: max(24px, env(safe-area-inset-bottom));
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(139, 0, 0, 0.38), rgba(10, 0, 0, 0.94) 70%),
+    repeating-linear-gradient(0deg, #120404 0 3px, #0c0202 3px 6px);
+  z-index: 30;
+  text-align: center;
+}
+.overlay.hidden { display: none; }
+
+.doom-title {
+  font-size: clamp(52px, 14vw, 110px);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: #e33;
+  text-shadow:
+    0 0 18px rgba(255, 60, 20, 0.55),
+    3px 3px 0 #7a0000,
+    6px 6px 0 #3a0000,
+    -1px -1px 0 #ffb08a;
+  line-height: 1;
+}
+.doom-title.small { font-size: clamp(34px, 9vw, 64px); }
+.doom-title.red { color: #ff2a1a; }
+
+.subtitle {
+  font-size: clamp(12px, 3.2vw, 18px);
+  letter-spacing: 0.22em;
+  color: #c99;
+  margin-bottom: 8px;
+}
+.footnote {
+  position: absolute;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: #755;
+}
+
+.btn {
+  min-width: min(300px, 82vw);
+  min-height: 52px;
+  padding: 12px 22px;
+  font-family: inherit;
+  font-size: clamp(15px, 4vw, 19px);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #ffd9b0;
+  background: linear-gradient(#4c1010, #2b0707);
+  border: 2px solid #8c2f1c;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #170303, 0 8px 22px rgba(0, 0, 0, 0.55);
+}
+.btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #170303; }
+.btn-primary {
+  color: #fff3e0;
+  background: linear-gradient(#a3220f, #6d1206);
+  border-color: #e05a2c;
+}
+
+.cols {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  justify-content: center;
+  margin: 6px 0 10px;
+}
+.col {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid #5a2415;
+  border-radius: 8px;
+  padding: 14px 20px;
+  text-align: left;
+  max-width: min(340px, 88vw);
+}
+.col h3 {
+  font-size: 14px;
+  letter-spacing: 0.22em;
+  color: #ff8a4c;
+  margin-bottom: 10px;
+}
+.col ul { list-style: none; }
+.col li { font-size: 13px; line-height: 1.85; color: #d8b8a4; }
+.col b { color: #ffd9b0; }
+
+/* ---------- Controles táctiles ---------- */
+#touch-ui {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+}
+#touch-ui.hidden { display: none; }
+
+#stick-zone {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 46%;
+  height: 62%;
+  pointer-events: auto;
+}
+#stick-base {
+  position: absolute;
+  left: 26px;
+  bottom: max(26px, env(safe-area-inset-bottom));
+  width: 118px;
+  height: 118px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 170, 110, 0.35);
+  background: rgba(60, 12, 6, 0.30);
+}
+#stick-knob {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(255, 150, 90, 0.42);
+  border: 2px solid rgba(255, 190, 140, 0.5);
+  transform: translate(-50%, -50%);
+}
+
+#look-zone {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 54%;
+  height: 100%;
+  pointer-events: auto;
+}
+
+#touch-buttons {
+  position: absolute;
+  right: max(18px, env(safe-area-inset-right));
+  bottom: max(22px, env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  pointer-events: none;
+}
+.tbtn {
+  pointer-events: auto;
+  border-radius: 50%;
+  font-family: inherit;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #ffe4c8;
+  background: rgba(120, 24, 10, 0.45);
+  border: 2px solid rgba(255, 140, 80, 0.5);
+  touch-action: none;
+}
+.tbtn-fire {
+  width: 96px;
+  height: 96px;
+  font-size: 17px;
+  background: rgba(170, 30, 10, 0.55);
+}
+.tbtn-mid { width: 68px; height: 68px; font-size: 14px; }
+.tbtn-small { width: 58px; height: 58px; font-size: 11px; }
+.tbtn:active { background: rgba(230, 90, 30, 0.6); }
