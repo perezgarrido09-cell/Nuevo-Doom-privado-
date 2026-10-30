@@ -1,0 +1,43 @@
+name: Construir APK de DOOM
+
+on:
+  push:
+    branches: [main, arena/9ce01c1f-nuevo-doom-privado]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4
+
+      - name: Preparar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Compilar APK
+        run: bash android/build-apk.sh
+
+      - name: Subir artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: DOOM-APK
+          path: android/out/DOOM.apk
+
+      - name: Publicar APK en Releases (link de descarga directa)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh release view v1.0.0 >/dev/null 2>&1; then
+            gh release create v1.0.0 android/out/DOOM.apk \
+              --title "DOOM v1.0.0 — APK para Android" \
+              --notes "APK instalable del juego DOOM (uso personal). Descarga DOOM.apk e instálalo en tu teléfono Android."
+          else
+            gh release upload v1.0.0 android/out/DOOM.apk --clobber
+          fi

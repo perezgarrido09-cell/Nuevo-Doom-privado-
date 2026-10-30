@@ -4,9 +4,11 @@ Shooter retro en primera persona (estilo años 90) para navegador, jugable en **
 
 ## Cómo ejecutarlo
 
-**Opción A — directo:** abre `index.html` en el navegador (doble clic). Ya funciona.
+**Opción A — APP para Android (recomendado en celular):** descarga **`DOOM.apk`** desde la sección [Releases](https://github.com/perezgarrido09-cell/Nuevo-Doom-privado-/releases) del repositorio e instálalo (ver "Instalar el APK" más abajo). Queda como app con su icono "DOOM", sin navegador.
 
-**Opción B — servidor local (recomendado para instalarlo como app):**
+**Opción B — directo:** abre `index.html` en el navegador (doble clic). Ya funciona.
+
+**Opción C — servidor local:**
 
 ```bash
 python3 -m http.server 8000
@@ -15,7 +17,16 @@ python3 -m http.server 8000
 
 Luego entra a `http://localhost:8000`.
 
-**En el celular:** abre la URL del servidor (o de GitHub Pages) y usa el menú del navegador → **"Instalar aplicación"** / **"Añadir a pantalla de inicio"**. Después de la primera carga funciona **sin conexión** (PWA con service worker).
+**En el celular (PWA):** abre la URL del servidor y usa el menú del navegador → **"Instalar aplicación"** / **"Añadir a pantalla de inicio"**. Después de la primera carga funciona **sin conexión** (PWA con service worker).
+
+## Instalar el APK (Android)
+
+1. Descarga `DOOM.apk` desde [Releases](https://github.com/perezgarrido09-cell/Nuevo-Doom-privado-/releases) (link directo de descarga).
+2. Toca el archivo descargado. Si Android pide permiso para **instalar apps desconocidas**, actívalo para tu navegador/archivos.
+3. Si Play Protect avisa ("app no reconocida"), elige **"Instalar de todos modos"** — es normal en apps personales sin publicar en Play Store.
+4. Abre el ícono **DOOM**. Funciona 100% sin conexión.
+
+El APK se construye automáticamente con **GitHub Actions** (`.github/workflows/build-apk.yml` + `android/build-apk.sh`) y se publica en Releases en cada cambio.
 
 ## Controles
 
@@ -48,6 +59,8 @@ js/game.js            bucle principal, HUD, estados
 js/main.js            arranque y registro del service worker
 manifest.webmanifest  metadatos PWA ("DOOM", pantalla completa)
 sw.js                 caché para funcionar sin conexión
+android/              app de Android (WebView) + script de compilación del APK
+.github/workflows/    workflow que compila el APK en GitHub Actions
 icons/                iconos de la app (generados por tools/gen_icons.py)
 tools/gen_icons.py    generador de iconos (solo desarrollo)
 tools/test_ray.js     pruebas del motor
